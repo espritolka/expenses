@@ -19,12 +19,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 
-// let counter = 0;
-// function createData(name, calories, fat, carbs) {
-//   counter += 1;
-//   return { id: counter, name, calories, fat, carbs};
-// }
-
 function getSorting(order, orderBy) {
     return order === 'desc'
         ? (a, b) => (b[orderBy] < a[orderBy] ? -1 : 1)
@@ -158,13 +152,14 @@ class EnhancedTableToolbar extends React.Component {
                                 </div>
                             </IconButton>
                         </Tooltip>
-                    ) : (
-                            <Tooltip title="Filter list">
-                                <IconButton aria-label="Filter list">
-                                    <FilterListIcon />
-                                </IconButton>
-                            </Tooltip>
-                        )}
+                    ) : ( <div/>
+                    //         <Tooltip title="Filter list">
+                    //             <IconButton aria-label="Filter list">
+                    //                 <FilterListIcon />
+                    //             </IconButton>
+                    //         </Tooltip>
+                      )
+                }
                 </div>
             </Toolbar>
         );

@@ -64,8 +64,8 @@ class Input extends React.Component {
             </div>
           </div>
           <div>
-            <label> Категория:</label>
-            <div className='col'>
+          <div className='col'>
+            <label key="3"> Категория:</label>
               <div className='input-group'>
                 <SelectItems valcat={this.props.categories} CategoryAdd={this.props.CategoryAdd}
                   changeFunc={this.handleCategoryChange} />
