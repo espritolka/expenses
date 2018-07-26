@@ -34,7 +34,7 @@ function getSorting(order, orderBy) {
 const columnData = [
     { id: 'name', numeric: false, disablePadding: true, label: 'Наименование' },
     { id: 'amount', numeric: true, disablePadding: false, label: 'Стоимость(руб)' },
-    { id: 'categories', numeric: false, disablePadding: false, label: 'Категория' },
+    { id: 'categories', numeric: true, disablePadding: false, label: 'Категория' },
     { id: 'date', numeric: true, disablePadding: false, label: 'Дата' },
 
 ];
