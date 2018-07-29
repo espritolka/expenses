@@ -12,41 +12,61 @@ import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/ModeEdit';
+import Delete from '@material-ui/icons/Delete';
+import TextField from '@material-ui/core/TextField';
+import classNames from 'classnames';
+//import Icon from '@material-ui/core/Icon';
 //import SelectItems from "./Input";
+import Save from '@material-ui/icons/Save';
+
 
 const styles = theme => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
   },
+  margin: {
+    margin: theme.spacing.unit,
+  },
   formControl: {
     margin: theme.spacing.unit,
-    minWidth: 120,
+    minWidth: 140,
+  },
+  button: {
+    margin: theme.spacing.unit,
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit,
+  },
+  textField: {
+    flexBasis: 50,
   },
 });
-function SelectIt(props) {
-  return (
-    <option value={props.id}>{props.item}</option>
-  );
-}
+// function SelectIt(props) {
+//   return (
+//     <option value={props.id}>{props.item}</option>
+//   );
+// }
 
-class DeleteSelect extends React.Component {
-  constructor(props) {
-    super(props);
-    this.ChangeValue = this.ChangeValue.bind(this);
-  }
-  ChangeValue(e) {
-    this.props.ChangeValueCategory(e.target.value);
-  }
-  render() {
-    var listItems = this.props.CategoryAdd.map(function (item) {
-      return <SelectIt item={item.name} id={item.id} key={item.id}/>
-    });
-    return (
-      <select  onChange={this.ChangeValue} className='form-control' >{listItems}</select>
-    );
-  }
-}
+// class DeleteSelect extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.ChangeValue = this.ChangeValue.bind(this);
+//   }
+//   ChangeValue(e) {
+//     this.props.ChangeValueCategory(e.target.value);
+//   }
+//   render() {
+//     var listItems = this.props.CategoryAdd.map(function (item) {
+//       return <SelectIt item={item.name} id={item.id} key={item.id} />
+//     });
+//     return (
+//       <select onChange={this.ChangeValue} className='form-control' >{listItems}</select>
+//     );
+//   }
+// }
 
 class DialogSelect extends React.Component {
   constructor(props) {
@@ -54,9 +74,8 @@ class DialogSelect extends React.Component {
     this.state = {
       open: false,
       name: "",
-     // valuedel: "-",
-      valcatid: 0
-      //CategoryAdd: this.props.CategoryAdd
+      valcatid: 0,
+      //valdel:"",
     };
     //this.handleSave = this.handleSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -71,10 +90,12 @@ class DialogSelect extends React.Component {
     console.log(value)
     //let name = [this.props.CategoryAdd === null ? "-" : this.props.CategoryAdd.find(id => id.id === value)['name']]
     this.setState({
-      valcatid: value,
-    //  valuedel: name === null ? "-" : name
+
+      valcatid: value.target.value
+      //  valuedel: name === null ? "-" : name
     });
-   // console.log(this.state.valuedel)
+    //console.log(this.state.valdel)
+    console.log(this.state.valcatid)
   }
   // handleClickDelete(event) {
   //   event.preventDefault()
@@ -133,8 +154,11 @@ class DialogSelect extends React.Component {
     const { classes } = this.props;
 
     return (
-      <div className ="input-group-append">
-        <button className="btn btn-outline-primary" type="button" onClick={this.handleClickOpen} > + </button>
+      <div>
+        <Button color="secondary" className={classes.button} aria-label="edit" onClick={this.handleClickOpen}>
+          <AddIcon /> Редактировать категории
+        </Button>
+        {/* <button className="btn btn-outline-primary" type="button" onClick={this.handleClickOpen} > + </button> */}
         {/* <Button onClick={this.handleClickOpen}>+ редактировать список категорий</Button> */}
         <Dialog
           disableBackdropClick
@@ -146,17 +170,30 @@ class DialogSelect extends React.Component {
           <DialogContent>
             <form className={classes.container}>
               <FormControl className={classes.formControl}>
-                <label>
+                <TextField
+                  label="Имя категории"
+                  id="v01"
+                  value={this.state.name}
+                  onChange={this.handleChange}
+                  className={classNames(classes.margin, classes.textField)}
+                  InputProps={{
+                    'aria-label': 'Description',
+                  }}
+                />
+                {/* <label>
                   <input
                     className="form-control"
                     type="text"
                     placeholder="Введите категорию..."
                     value={this.state.name}
                     onChange={this.handleChange}
-                  /> </label>
-                <button className="btn btn-outline-primary" onClick={this.handleSaveCategory} color="primary">
+                  /> </label> */}
+                {/* <button className="btn btn-outline-primary" onClick={this.handleSaveCategory} color="primary">
                   Добавить категорию
-            </button>
+            </button> */}
+                <Button variant="contained" color="primary" size="small" className={classes.button} onClick={this.handleSaveCategory}>
+                  Добавить<Save className={classes.rightIcon} />
+                </Button>
               </FormControl>
             </form>
           </DialogContent>
@@ -164,14 +201,33 @@ class DialogSelect extends React.Component {
           <DialogContent>
             <form className={classes.container}>
               <FormControl className={classes.formControl}>
-                <label>
+                {/* <label>
                   <DeleteSelect valcat={this.props.categories
-                  } CategoryAdd={this.props.CategoryAdd} valuedel={this.state.valuedel} ChangeValueCategory={this.ChangeValueCategory} />
-                </label>
-                <button className="btn btn-outline-primary" onClick={this.handleClickDelete} color="primary">
+                  } CategoryAdd={this.props.CategoryAdd} ChangeValueCategory={this.ChangeValueCategory} />
+                </label> */}
+                <InputLabel htmlFor="age-helper">Выберите </InputLabel>
+                <Select
+                  value={this.state.valcatid}
+                  onChange={this.ChangeValueCategory}
+                  // inputProps={{
+                  //   name: 'age',
+                  //   id: 'age-simple',
+                  // }}
+                  InputProps={{
+                    'aria-label': 'Description',
+                  }}
+                >
+                  {this.props.CategoryAdd.map(option => (
+                    <MenuItem key={option.id} value={option.id}>
+                      {option.name}
+                    </MenuItem>))}
+                </Select>
+                <Button variant="contained" color="secondary" size="small" className={classes.button} onClick={this.handleClickDelete} >
+                  Удалить<Delete className={classes.rightIcon} />
+                </Button>
+                {/* <button className="btn btn-outline-primary" onClick={this.handleClickDelete} color="primary">
                   Удалить категорию
-            </button>
-
+            </button> */}
               </FormControl>
             </form>
           </DialogContent>
@@ -191,6 +247,7 @@ class DialogSelect extends React.Component {
 
 DialogSelect.propTypes = {
   classes: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
 };
 
 
