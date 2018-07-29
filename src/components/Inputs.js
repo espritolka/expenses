@@ -25,13 +25,13 @@ const styles = theme => ({
     flexWrap: 'wrap',
   },
   margin: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit * 2,
   },
   withoutLabel: {
     marginTop: theme.spacing.unit * 3,
   },
   textField: {
-    flexBasis: 200,
+    flexBasis: 250,
   },
 });
 
@@ -104,33 +104,13 @@ class Inputs extends React.Component {
             </MenuItem>
           ))}
         </TextField>
-        {/* <DialogSelect CategoryAdd={this.props.CategoryAdd} CategoryAddChange={this.handleCategoryAddChange} ForeClickDelete={this.props.handleClickDelete} /> */}
-        
       </div>
-      
     );
   }
 }
-// const CategoryApp = ["Категория не выбрана", "Прочее", "Еда"];
-// function SelectOpt(props) {
-//   return (
-//     <option value={props.item} key={props.id}>{props.item}</option>
-//   );
-// }
 
-// class SelectItems extends React.Component {
-//   render() {
-//     var listItems = this.props.CategoryAdd.map(function (item) {
-//       return <SelectOpt item={item.name} id={item.id} key={item.id} />
-//     });
-//     return (
-//       <select value={this.props.valcat} onChange={this.props.changeFunc} className='custom-select'>{listItems}</select>
-//     );
-//   }
-// }
 Inputs.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Inputs);

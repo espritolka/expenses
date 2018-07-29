@@ -196,8 +196,8 @@ class App extends React.Component {
         <SimpleAppBar />
         <br />
         <div className={classes.container}>
-        <Grid container spacing={1}>
-        <Grid item xs={9} justify='center'>
+        <Grid container spacing={0}>
+        <Grid item xs={9} >
             <Inputs id="newItem"
               name={this.state.name}
               categories={this.state.categories}
