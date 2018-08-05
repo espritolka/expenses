@@ -1,4 +1,5 @@
 import Inputs from "./Inputs";
+import InputsIncome from './InputsIncome';
 //import './style.css';
 import { withStyles } from '@material-ui/core/styles';
 import React, { Component } from 'react';
@@ -13,12 +14,20 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import pink from '@material-ui/core/colors/pink';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+import SwipeableViews from 'react-swipeable-views';
 
 //import { Button } from "../node_modules/@material-ui/core";
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 
 
+TabContainer.propTypes = {
+  children: PropTypes.node.isRequired,
+  dir: PropTypes.string.isRequired,
+};
 //let date = new Date();
 const styles = theme => ({
   root: {
@@ -27,7 +36,7 @@ const styles = theme => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
-   flex: '1 0 auto',
+    flex: '1 0 auto',
     margin: theme.spacing.unit * 3,
   },
   button: {
@@ -53,8 +62,12 @@ class App extends React.Component {
       categories: "",
       amount: "",
       sum: 0,
+      income: 0,
+      balance: 0,
+      value: 0,
       CategoryAdd: []
     };
+    this.handleClickIncome = this.handleClickIncome.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleCategoryAddChange = this.handleCategoryAddChange.bind(this);
     this.handleAmountChange = this.handleAmountChange.bind(this);
@@ -64,6 +77,8 @@ class App extends React.Component {
     this.handleClickDelete = this.handleClickDelete.bind(this);
     this.handleDeleteDemoSelectedItems = this.handleDeleteDemoSelectedItems.bind(this);
     this.summFunc = this.summFunc.bind(this);
+    this.sumIncome = this.sumIncome.bind(this);
+    this.balanceFunc = this.balanceFunc.bind(this);
   }
   componentDidMount() {
     console.log("I was mounted");
@@ -71,7 +86,9 @@ class App extends React.Component {
       // .then(res => console.log(res.json()))
       .then((response) => response.json())
       .then((json) => this.setState(prev => prev.items = json))
-      .then(() => this.summFunc(this.state.items));
+      .then(() => this.summFunc(this.state.items))
+      .then(() => this.sumIncome(this.state.items))
+      .then(() => this.balanceFunc(this.state.income, this.state.sum));
     console.log(this.state.sum)
     console.log("Category was mounted");
     fetch("http://178.62.212.14:8080/category")
@@ -80,8 +97,27 @@ class App extends React.Component {
       .then((json) => this.setState(prev => prev.CategoryAdd = json));
     //console.log(this.summFunc(this.state.items) )
   }
+  balanceFunc(income, expense) {
+    let bal = income - expense;
+    this.setState({
+      balance: bal
+    })
+  }
+  sumIncome(items) {
+    let it = items.filter(item => {
+      return item.type !== "EXPENSE";
+    })
+    let summ = it.reduce(function (a, b) { return a + b.amount }, 0)
+    console.log(summ)
+    this.setState({
+      income: summ
+    })
+  }
   summFunc(items) {
-    let summ = items.reduce(function (a, b) { return a + b.amount }, 0)
+    let it = items.filter(item => {
+      return item.type !== "REVENUE";
+    });
+    let summ = it.reduce(function (a, b) { return a + b.amount }, 0)
     console.log(summ)
     this.setState({
       sum: summ
@@ -156,12 +192,44 @@ class App extends React.Component {
         )
     }
   };
+  handleClickIncome(e) {
+    let Obj = {
+      details: this.state.name,
+      categories: [{ name: "Доход" }],
+      amount: this.state.amount,
+      type: "REVENUE"
+    }
+    fetch("http://178.62.212.14:8080/expense",
+      {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(Obj)
+      })
+      .then(res => res.json())
+      .then(json => this.setState(prevState => ({ "items": prevState.items.concat(json) })))
+      .then(() => this.summFunc(this.state.items))
+      .then(() => this.sumIncome(this.state.items))
+      .then(() => this.balanceFunc(this.state.income, this.state.sum));
+    this.setState(
+      {
+        name: "",
+        categories: "",
+        // categories: "Категория не выбрана",
+        amount: ''
+      }
+    )
+    console.log({ items: this.state.items });
+  }
   handleClick(e) {
     let Obj = {
       // id: Date.now() + Items[0].id + 1,
       details: this.state.name,
       categories: [{ name: this.state.categories }],
-      amount: this.state.amount
+      amount: this.state.amount,
+      type: "EXPENSE"
       // date: date.getDate() + "." + date.getMonth() + "." + date.getFullYear()
     }
     fetch("http://178.62.212.14:8080/expense",
@@ -176,7 +244,8 @@ class App extends React.Component {
       .then(res => res.json())
       .then(json => this.setState(prevState => ({ "items": prevState.items.concat(json) })))
       .then(() => this.summFunc(this.state.items))
-
+      .then(() => this.sumIncome(this.state.items))
+      .then(() => this.balanceFunc(this.state.income, this.state.sum));
     this.setState(
       {
         name: "",
@@ -187,16 +256,82 @@ class App extends React.Component {
     )
     console.log({ items: this.state.items });
   }
+  handleChange = (event, value) => {
+    this.setState({ value });
+  };
+
+  handleChangeIndex = index => {
+    this.setState({ value: index });
+  };
 
   render() {
-    const { classes } = this.props;
+    const { classes, theme } = this.props;
     return (
       <div>
-      <div className={classes.root}>
-        <SimpleAppBar />
-        <br />
-        <div className={classes.container}>
-        <Grid container spacing={0}>
+        <div className={classes.root}>
+          <SimpleAppBar />
+          <AppBar position="static" color="default">
+            <Tabs
+              value={this.state.value}
+              onChange={this.handleChange}
+              indicatorColor="primary"
+              textColor="primary"
+              fullWidth
+            >
+              <Tab label="Добавить расход" />
+              <Tab label="Добавить доход" />
+            </Tabs>
+          </AppBar>
+          <SwipeableViews
+            axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+            index={this.state.value}
+            onChangeIndex={this.handleChangeIndex}
+          >
+            <TabContainer dir={theme.direction}>
+              <Grid container spacing={0}>
+                <Grid item xs={9} >
+                  <Inputs id="newItem"
+                    name={this.state.name}
+                    categories={this.state.categories}
+                    amount={this.state.amount}
+                    NameChange={this.handleNameChange}
+                    AmountChange={this.handleAmountChange}
+                    CategoryChange={this.handleCategoryChange}
+                    CategoryAdd={this.state.CategoryAdd}
+                    handleClickDelete={this.handleClickDelete}
+                    handleCategoryAddChange={this.handleCategoryAddChange}
+                  />
+                </Grid>
+                <Grid item xs={3}>
+                  <Button variant="contained" color="primary" size="large" onClick={this.handleClick}>Добавить</Button>
+                </Grid>
+              </Grid>
+            </TabContainer>
+            <TabContainer dir={theme.direction}>
+              <Grid container spacing={0}>
+                <Grid item xs={9} >
+                  <InputsIncome
+                    id="newItem2"
+                    name={this.state.name}
+                    categories={this.state.categories}
+                    amount={this.state.amount}
+                    NameChange={this.handleNameChange}
+                    AmountChange={this.handleAmountChange}
+                    CategoryChange={this.handleCategoryChange}
+                    CategoryAdd={this.state.CategoryAdd}
+                    handleClickDelete={this.handleClickDelete}
+                    handleCategoryAddChange={this.handleCategoryAddChange}
+                  />
+                </Grid>
+                <Grid item xs={3}>
+                  <Button variant="contained" color="primary" size="large" onClick={this.handleClickIncome}>Добавить</Button>
+                </Grid>
+              </Grid>
+            </TabContainer>
+          </SwipeableViews>
+          <br />
+          <div className={classes.container}>
+            {/* <Grid container spacing={0}>
         <Grid item xs={9} >
             <Inputs id="newItem"
               name={this.state.name}
@@ -213,35 +348,40 @@ class App extends React.Component {
             <Grid item xs={3}>
             <Button variant="contained" color="primary" size="large" onClick={this.handleClick}>Добавить</Button>
           </Grid>
-          </Grid>
-          {/* <button className="btn btn-outline-primary btn-lg btn-block" type="submit"
-            onClick={this.handleClick}>Добавить</button> */}
-          {/* <ItemList name={this.state.name} categories={this.state.categories}
-          amount={this.state.amount} items={this.state.items} onDeleteItem={this.handleDeleteItem}
-        />*/}
-          <Demo items={this.state.items} onDeleteItem={this.handleDeleteDemoSelectedItems} />
-          {/* <div className="card text-white bg-primary mb-3">
-            <div className="card-body">
-            Всего: {this.state.sum}
-  </div>
-          </div> */}
-          
-        </div>
-        <Paper className={classes.paper} >
-            <h2> Всего: {this.state.sum} </h2>
+          </Grid> */}
+
+            <Demo items={this.state.items} onDeleteItem={this.handleDeleteDemoSelectedItems} />
+
+          </div>
+          <Paper className={classes.paper} >
+            <h2>Баланс: {this.state.balance}&nbsp;&nbsp; <h4>Всего расходов: {this.state.sum}</h4> </h2>
           </Paper>
-      </div>
+        </div>
       </div>
     );
   }
 }
+function TabContainer(props) {
+  const { children, dir } = props;
 
+  return (
+    <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>
+      {children}
+    </Typography>
+  );
+}
+
+TabContainer.propTypes = {
+  children: PropTypes.node.isRequired,
+  dir: PropTypes.string.isRequired,
+};
 //const CategoryArr = ["Категория не выбрана", "Прочее", "Еда"];
 // todo react https://codepen.io/search/projects?q=react%20todo&page=1
 // tabl https://codepen.io/OStefani/pen/YYXKwr 
 
 App.propTypes = {
   classes: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
 };
 
 // const Items = [
@@ -260,6 +400,6 @@ App.propTypes = {
 //     date: "3.6.2018"
 //   }
 // ];
- export default withStyles(styles)(App);
+export default withStyles(styles, { withTheme: true })(App);
 // render(<App/>, document.getElementById("root"));
 

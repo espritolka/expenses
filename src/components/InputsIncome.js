@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
-
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -36,7 +35,7 @@ const styles = theme => ({
   },
 });
 
-class Inputs extends React.Component {
+class InputsIncome extends React.Component {
   constructor(props) {
     super(props);
     
@@ -69,7 +68,7 @@ class Inputs extends React.Component {
       
       <div className={classes.root}>
       <TextField
-          label="Расход"
+          label="Доход"
           id="validationDefault01"
           value={this.props.name}
           onChange={this.handleNameChange}
@@ -79,7 +78,7 @@ class Inputs extends React.Component {
           }}
         />
         <TextField
-          label="Стоимость"
+          label="Сумма"
           id="validationDefault02"
           value={this.props.amount}
           onChange={this.handleAmountChange}
@@ -88,31 +87,15 @@ class Inputs extends React.Component {
             startAdornment: <InputAdornment position="start">₽</InputAdornment>,
           }}
         />
-        <TextField
-          select
-          label="Выберите категорию"
-          className={classNames(classes.margin, classes.textField)}
-          value={this.props.categories}
-          onChange={this.handleCategoryChange}
-          InputProps={{
-            'aria-label': 'Description',
-          }}
-        >
-        <DialogSelect CategoryAdd={this.props.CategoryAdd} CategoryAddChange={this.handleCategoryAddChange} ForeClickDelete={this.props.handleClickDelete} />
-          {this.props.CategoryAdd.map(option => (
-            <MenuItem key={option.id} value={option.name}>
-              {option.name}
-            </MenuItem>
-          ))}
-        </TextField>
+       
       </div>
     );
   }
 }
 
-Inputs.propTypes = {
+InputsIncome.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Inputs);
+export default withStyles(styles)(InputsIncome);
 //export default SelectItems;

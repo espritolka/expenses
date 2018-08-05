@@ -303,7 +303,7 @@ class EnhancedTable extends React.Component {
                                             <TableCell component="th" scope="row" padding="none">
                                                 {n.details}
                                             </TableCell>
-                                            <TableCell numeric>{n.amount}</TableCell>
+                                            <TableCell numeric>{n.type === "EXPENSE" ? "-" + n.amount: "+" + n.amount}</TableCell>
                                             <TableCell numeric>{n.categories === null ? "" : n.categories.map(item => item.name).join(", ")}</TableCell>
                                             <TableCell numeric>{n.date}</TableCell>
                                         </TableRow>
