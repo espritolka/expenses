@@ -18,6 +18,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
+import TableFooter from '@material-ui/core/TableFooter';
 
 function getSorting(order, orderBy) {
     return order === 'desc'
@@ -152,14 +153,14 @@ class EnhancedTableToolbar extends React.Component {
                                 </div>
                             </IconButton>
                         </Tooltip>
-                    ) : ( <div/>
-                    //         <Tooltip title="Filter list">
-                    //             <IconButton aria-label="Filter list">
-                    //                 <FilterListIcon />
-                    //             </IconButton>
-                    //         </Tooltip>
-                      )
-                }
+                    ) : (<div />
+                            //         <Tooltip title="Filter list">
+                            //             <IconButton aria-label="Filter list">
+                            //                 <FilterListIcon />
+                            //             </IconButton>
+                            //         </Tooltip>
+                        )
+                    }
                 </div>
             </Toolbar>
         );
@@ -176,7 +177,7 @@ EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
 const styles = theme => ({
     root: {
         width: '100%',
-        marginTop: theme.spacing.unit * 3,
+        //marginTop: theme.spacing.unit * 3,
     },
     table: {
         minWidth: 1020,
@@ -315,22 +316,32 @@ class EnhancedTable extends React.Component {
                                 </TableRow>
                             )}
                         </TableBody>
+                    <TableFooter>
+                        <TableRow>
+                            <TableCell colSpan={4}>
+                            <b>  Баланс: {this.props.balance} </b>&nbsp;&nbsp; Всего расходов: {this.props.sum}
+                            </TableCell>
+                        
+                            <TablePagination
+                                style={{right: 0}}
+                                colSpan={9}
+                                component="div"
+                                count={items.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                backIconButtonProps={{
+                                    'aria-label': 'Previous Page',
+                                }}
+                                nextIconButtonProps={{
+                                    'aria-label': 'Next Page',
+                                }}
+                                onChangePage={this.handleChangePage}
+                                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                            />
+                        </TableRow>
+                    </TableFooter>
                     </Table>
                 </div>
-                <TablePagination
-                    component="div"
-                    count={items.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    backIconButtonProps={{
-                        'aria-label': 'Previous Page',
-                    }}
-                    nextIconButtonProps={{
-                        'aria-label': 'Next Page',
-                    }}
-                    onChangePage={this.handleChangePage}
-                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                />
             </Paper>
         );
     }

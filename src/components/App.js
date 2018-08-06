@@ -267,7 +267,7 @@ class App extends React.Component {
   render() {
     const { classes, theme } = this.props;
     return (
-      <div>
+      
         <div className={classes.root}>
           <SimpleAppBar />
           <AppBar position="static" color="default">
@@ -329,7 +329,6 @@ class App extends React.Component {
               </Grid>
             </TabContainer>
           </SwipeableViews>
-          <br />
           <div className={classes.container}>
             {/* <Grid container spacing={0}>
         <Grid item xs={9} >
@@ -349,15 +348,15 @@ class App extends React.Component {
             <Button variant="contained" color="primary" size="large" onClick={this.handleClick}>Добавить</Button>
           </Grid>
           </Grid> */}
-
-            <Demo items={this.state.items} onDeleteItem={this.handleDeleteDemoSelectedItems} />
+            <Demo items={this.state.items} onDeleteItem={this.handleDeleteDemoSelectedItems} sum={this.state.sum} balance={this.state.balance}/>
 
           </div>
-          <Paper className={classes.paper} >
+         {/*  <Paper className={classes.paper} >
             <h2>Баланс: {this.state.balance}&nbsp;&nbsp; <h4>Всего расходов: {this.state.sum}</h4> </h2>
           </Paper>
+          */}
         </div>
-      </div>
+      
     );
   }
 }
