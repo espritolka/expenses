@@ -192,8 +192,8 @@ class EnhancedTable extends React.Component {
         super(props);
 
         this.state = {
-            order: 'asc',
-            orderBy: 'amount',
+            order: 'desc',
+            orderBy: 'date',
             selected: [],
             //   data: [
             //     createData('Cupcake', 305, 3.7, 67),
