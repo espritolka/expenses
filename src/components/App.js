@@ -41,6 +41,7 @@ const styles = theme => ({
   },
   button: {
     margin: theme.spacing.unit,
+    padding: theme.spacing.unit*2
   },
   paper: {
     padding: theme.spacing.unit * 2,
@@ -50,6 +51,7 @@ const styles = theme => ({
     margin: theme.spacing.unit,
     backgroundColor: pink[100],
   },
+ 
 });
 
 class App extends React.Component {
@@ -157,6 +159,8 @@ class App extends React.Component {
         }
         )
         .then(() => this.summFunc(this.state.items))
+        .then(() => this.sumIncome(this.state.items))
+        .then(() => this.balanceFunc(this.state.income, this.state.sum))
     );
 
   }
@@ -174,6 +178,8 @@ class App extends React.Component {
       }
       )
       .then(() => this.summFunc(this.state.items))
+      .then(() => this.sumIncome(this.state.items))
+      .then(() => this.balanceFunc(this.state.income, this.state.sum))
   }
   handleClickDelete(eventid) {
     //  event.preventDefault()
@@ -289,7 +295,7 @@ class App extends React.Component {
           >
             <TabContainer dir={theme.direction}>
               <Grid container spacing={0}>
-                <Grid item xs={9} >
+                <Grid item xs={7} >
                   <Inputs id="newItem"
                     name={this.state.name}
                     categories={this.state.categories}
@@ -303,13 +309,13 @@ class App extends React.Component {
                   />
                 </Grid>
                 <Grid item xs={3}>
-                  <Button variant="contained" color="primary" size="large" onClick={this.handleClick}>Добавить</Button>
+                  <Button variant="contained" color="primary" size="large" className={classes.button} onClick={this.handleClick}>Добавить</Button>
                 </Grid>
               </Grid>
             </TabContainer>
             <TabContainer dir={theme.direction}>
               <Grid container spacing={0}>
-                <Grid item xs={9} >
+                <Grid item xs={5} >
                   <InputsIncome
                     id="newItem2"
                     name={this.state.name}
@@ -324,7 +330,7 @@ class App extends React.Component {
                   />
                 </Grid>
                 <Grid item xs={3}>
-                  <Button variant="contained" color="primary" size="large" onClick={this.handleClickIncome}>Добавить</Button>
+                  <Button variant="contained" color="primary" size="large" className={classes.button} onClick={this.handleClickIncome}>Добавить</Button>
                 </Grid>
               </Grid>
             </TabContainer>

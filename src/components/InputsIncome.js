@@ -31,7 +31,7 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 3,
   },
   textField: {
-    flexBasis: 250,
+    flexBasis: 200,
   },
 });
 

@@ -26,13 +26,13 @@ const styles = theme => ({
     flexWrap: 'wrap',
   },
   margin: {
-    margin: theme.spacing.unit * 2,
+    margin: theme.spacing.unit *2,
   },
   withoutLabel: {
     marginTop: theme.spacing.unit * 3,
   },
   textField: {
-    flexBasis: 250,
+    flexBasis: 200,
   },
 });
 

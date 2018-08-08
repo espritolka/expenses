@@ -131,7 +131,7 @@ class DialogSelect extends React.Component {
       description: "",
       name: this.state.name
     }
-
+if(CategoryObj.name !==""){
     fetch("http://178.62.212.14:8080/category",
       {
         method: "POST",
@@ -148,6 +148,7 @@ class DialogSelect extends React.Component {
       {
         name: ''
       });
+    }
   }
 
   render() {
