@@ -144,7 +144,6 @@ class App extends React.Component {
     });
   }
   handleDeleteDemoSelectedItems(selectedArr) {
-    console.log("и сюда попала")
     selectedArr.map((select) =>
 
       fetch("http://178.62.212.14:8080/expense/" + select, { method: "DELETE" })
