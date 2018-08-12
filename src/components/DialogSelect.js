@@ -248,7 +248,7 @@ if(CategoryObj.name !==""){
 
 DialogSelect.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
+  //theme: PropTypes.object.isRequired,
 };
 
 
